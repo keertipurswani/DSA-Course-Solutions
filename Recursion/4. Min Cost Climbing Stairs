@@ -1,0 +1,68 @@
+// https://leetcode.com/problems/min-cost-climbing-stairs
+// (TLE solutions - not the most optimised solutions)
+
+//C++
+
+//Solution 1
+
+class Solution {
+public:
+
+    int helper(int ind, vector<int>& cost) {
+        if(ind <= 1) return cost[ind];
+        return ((ind == cost.size() ? 0 : cost[ind]) + min(helper(ind-1, cost), helper(ind-2, cost))); 
+    }
+
+    int minCostClimbingStairs(vector<int>& cost) {
+        return helper(cost.size() , cost);
+    }
+};
+
+//Solution 2
+
+class Solution {
+public:
+
+    int helper(int ind, vector<int>& cost) {
+        if(ind <= 1) return cost[ind];
+        return (cost[ind] + min(helper(ind-1, cost), helper(ind-2, cost))); 
+    }
+
+    int minCostClimbingStairs(vector<int>& cost) {
+        return min(helper(cost.size() - 1 , cost), helper(cost.size() - 2, cost));
+    }
+};
+
+//Solution 3 - Homework to try from 0 and move to n
+
+//JAVA
+
+//Solution 1
+
+class Solution {
+
+    public int helper(int ind, int[] cost) {
+        if(ind <=1 ) return cost[ind];
+        return (ind == cost.length ? 0 : cost[ind]) + Math.min(helper(ind-1, cost), helper(ind-2, cost));
+    }
+
+    public int minCostClimbingStairs(int[] cost) {
+        return helper(cost.length, cost);
+    }
+}
+
+//Solution 2
+
+class Solution {
+
+    public int helper(int ind, int[] cost) {
+        if(ind <=1 ) return cost[ind];
+        return cost[ind] + Math.min(helper(ind-1, cost), helper(ind-2, cost));
+    }
+
+    public int minCostClimbingStairs(int[] cost) {
+        return Math.min(helper(cost.length - 1, cost), helper(cost.length - 2, cost));
+    }
+}
+
+//Solution 3 - Homework to try from 0 and move to n
