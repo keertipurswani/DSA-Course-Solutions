@@ -3,6 +3,8 @@
 
 // C++
 
+// Solution 1 - 0 to n
+
 class Solution {
 public:
 
@@ -18,7 +20,25 @@ public:
     }
 };
 
+// Solution 2 - n to 0
+
+class Solution {
+public:
+    int helper(vector<int>& nums, int ind) {
+        if(ind < 0) return 0;
+        int inc = nums[ind] + helper(nums, ind-2);
+        int exc = helper(nums, ind-1);
+        return max(inc, exc);
+    }
+
+    int rob(vector<int>& nums) {
+        return helper(nums, nums.size() - 1);
+    }
+};
+
 //JAVA
+
+// Solution 1 - 0 to n
 
 class Solution {
 
@@ -31,5 +51,20 @@ class Solution {
 
     public int rob(int[] nums) {
         return helper(nums, 0, nums.length);
+    }
+}
+
+// Solution 2 - n to 0
+
+class Solution {
+    public int helper(int[] nums, int ind) {
+        if(ind < 0) return 0;
+        int inc = nums[ind] + helper(nums, ind-2);
+        int exc = helper(nums, ind-1);
+        return Math.max(inc, exc);
+    }
+
+    public int rob(int[] nums) {
+        return helper(nums, nums.length - 1);
     }
 }
