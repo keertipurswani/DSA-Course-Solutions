@@ -1,8 +1,6 @@
 // https://leetcode.com/problems/house-robber-ii
 // (TLE solutions - not the most optimised solutions)
 
-//C++
-
 class Solution {
 public:
     int helper(vector<int>& nums, int ind, int n) {
@@ -17,21 +15,3 @@ public:
         return max( helper(nums, 0, nums.size()-1), helper(nums, 1, nums.size()));
     }
 };
-
-//JAVA
-
-class Solution {
-    
-    public int helper(int[] nums, int ind, int n) {
-        if(ind >= n) return 0;
-        int inc = nums[ind] + helper(nums, ind+2, n);
-        int exc = helper(nums, ind+1, n);
-        return Math.max(inc, exc);
-    }
-
-    public int rob(int[] nums) {
-        if(nums.length == 1) return nums[0];
-        return Math.max( helper(nums, 0, nums.length-1), helper(nums, 1, nums.length) );
-    }
-
-}
