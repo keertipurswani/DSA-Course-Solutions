@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/house-robber/
+
+var rob = function(nums) {
+    return helper(0, nums);
+}
+
+var helper = function(ind, nums) {
+
+    if(ind >= nums.length) 
+        return 0;
+
+    let _rob = 0;
+    _rob = helper(ind+2, nums) + nums[ind] ;
+    
+    nrob = helper(ind+1, nums);
+    
+    return Math.max(_rob, nrob);
+}
