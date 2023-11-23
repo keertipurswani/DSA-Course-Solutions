@@ -1,0 +1,17 @@
+//https://leetcode.com/problems/min-cost-climbing-stairs/
+
+var minCostClimbingStairs = function(cost) {
+    // 10, 15, 20
+    return helper(cost.length, cost);
+};
+
+var helper = function(ind, cost) {
+    if(ind <= 1) return cost[ind];
+    var c1 = helper(ind-1, cost );
+    var c2 = helper(ind-2, cost );
+
+    return  ( (Math.min(
+        c1, 
+        c2
+    )) + (ind == cost.length ? 0 : cost[ind])) ;
+}
