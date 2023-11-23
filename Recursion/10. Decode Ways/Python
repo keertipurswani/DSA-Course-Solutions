@@ -1,0 +1,31 @@
+# https://leetcode.com/problems/decode-ways
+
+# Solution 1 - n to 0
+class Solution:
+    def helper(self, s: str, ind: int, n: int) -> int:
+        if ind <= 0: return 1
+        res = 0
+        if s[ind] != '0': res += self.helper(s, ind-1, n)
+        if s[ind-1] == '1' or (s[ind-1] == '2' and s[ind] >= '0' and s[ind] <= '6'):
+            res += self.helper(s, ind-2, n)
+        return res
+    
+    def numDecodings(self, s: str) -> int:
+        if s[0] == '0': return 0
+        n = len(s)
+        return self.helper(s, n-1, n)
+
+
+# Solution 2 - 0 to n
+class Solution:
+    def helper(self, s: str, ind: int, n: int) -> int:
+        if ind == n: return 1
+
+        res = self.helper(s, ind+1, n)
+        if ind < n-1 and (s[ind] == '1' or (s[ind] == '2' and s[ind+1] >= '0' and s[ind+1] <= '6')):
+            res += self.helper(s, ind+2, n)
+        return res
+    
+    def numDecodings(self, s: str) -> int:
+        if s[0] == '0': return 0
+        return self.helper(s, 0, len(s))

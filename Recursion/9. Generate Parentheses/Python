@@ -1,0 +1,14 @@
+# https://leetcode.com/problems/generate-parentheses
+
+class Solution:
+    def helper(self, o: int, c: int, n: int, cur: str, res: list[str]) -> None:
+        if c == n:
+            res.append(cur)
+            return
+        if o > c: self.helper(o, c+1, n, cur+")", res)
+        if o < n: self.helper(o+1, c, n, cur+"(", res)
+
+    def generateParenthesis(self, n: int) -> list[str]:
+        res = []
+        self.helper(0, 0, n, "", res)
+        return res

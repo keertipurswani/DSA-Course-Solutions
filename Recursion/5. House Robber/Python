@@ -1,0 +1,25 @@
+# https://leetcode.com/problems/house-robber
+# (TLE solutions - not the most optimised solutions)
+
+# Solution 1 - 0 to n
+class Solution:
+    def helper(self, nums: list[int], ind: int, n: int) -> int:
+        if ind >= n: return 0
+        include = nums[ind] + self.helper(nums, ind+2, n)
+        exclude = self.helper(nums, ind+1, n)
+        return max(include, exclude)
+
+    def rob(self, nums: list[int]) -> int:
+        return self.helper(nums, 0, len(nums))
+
+
+# Solution 2 - n to 0
+class Solution:
+    def helper(self, nums: list[int], ind: int) -> int:
+        if ind < 0: return 0
+        include = nums[ind] + self.helper(nums, ind-2)
+        exclude = self.helper(nums, ind-1)
+        return max(include, exclude)
+
+    def rob(self, nums: list[int]) -> int:
+        return self.helper(nums, len(nums)-1)

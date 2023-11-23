@@ -1,0 +1,32 @@
+# https://leetcode.com/problems/min-cost-climbing-stairs
+# (TLE solutions - not the most optimised solutions#
+
+# Solution 1
+class Solution:
+    def helper(self, ind: int, cost: list[int]):
+        if ind <= 1: return cost[ind]
+        return (0 if ind == len(cost) else cost[ind]) + min(self.helper(ind-1, cost), self.helper(ind-2, cost))
+
+    def minCostClimbingStairs(self, cost: list[int]):
+        return self.helper(len(cost), cost)
+
+
+# Solution 2
+class Solution:
+    def helper(self, ind: int, cost: list[int]):
+        if ind <= 1: return cost[ind]
+        return cost[ind] + min(self.helper(ind-1, cost), self.helper(ind-2, cost))
+
+    def minCostClimbingStairs(self, cost: list[int]):
+        return min(self.helper(len(cost)-1, cost), self.helper(len(cost)-2, cost))
+
+
+# Solution 3 - From 0 to n
+class Solution:
+    def helper(self, ind: int, cost: list[int]):
+        if ind >= len(cost): return 0
+        return cost[ind] + min(self.helper(ind+1, cost), self.helper(ind+2, cost))
+
+    def minCostClimbingStairs(self, cost: list[int]):
+        return min(self.helper(0, cost), self.helper(1, cost))
+    
