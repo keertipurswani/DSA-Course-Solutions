@@ -1,7 +1,7 @@
 # https//leetcode.com/problems/combinations
 
 # Actaul problem: make combinations of n numbers.
-# Sub problem: make combinations of n-1 numbers
+# Sub problem: make combinations of n-1(top down) numbers or 1,2....n-1,n numbers(bottom-up).
 
 # Bottom-up approach
 
