@@ -10,3 +10,4 @@ class Solution:
         if n==0:
             return 0
         return self.climbStairs(n-1)+self.climbStairs(n-2)
+

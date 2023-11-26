@@ -5,6 +5,8 @@
 # Actual problem: Find min cost to reach top of stairs
 # Sub problem: find min cost to reach n+1 or n+2 steps
 # Recurrence relation: f(n)=min(cost[n]+f(n+1),cost[n+1]+f(n+2))
+# Time Complexity: O(2^n)
+# Space Complexity: O(n)
 
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
