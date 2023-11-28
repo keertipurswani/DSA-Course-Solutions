@@ -1,6 +1,8 @@
 // https://leetcode.com/problems/edit-distance
 
 // Solution 1 - Recursion TLE - indices 0 to n
+// Time Complexity - O(3^(n+m)) - exponential
+// Space Complexity -  O(n+m) - linear
 
 class Solution {
 
@@ -21,6 +23,8 @@ class Solution {
 }
 
 // Solution 2 - Memoization
+// Time Complexity - O(nm) - no of unique function calls
+// Space Complexity -  O(n+m) + O(nm) (recursive stack space + 2d array)
 
 class Solution {
 
@@ -50,6 +54,8 @@ class Solution {
 }
 
 // Solution 3 - Bottom Up DP
+// Time Complexity - O(nm) 
+// Space Complexity -  O(nm) 
 
 class Solution {
     public int minDistance(String word1, String word2) {
@@ -72,8 +78,33 @@ class Solution {
                 else dp[i][j] = 1 + Math.min(dp[i-1][j], Math.min(dp[i][j-1], dp[i-1][j-1]));
             }
         }
-
         return dp[n][m];
     }
 }
 
+// Solution 4 - Space Optimised Bottom Up DP
+// Time Complexity - O(nm) 
+// Space Complexity -  O(m) 
+
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int n = word1.length(), m = word2.length();
+        int[] prev = new int[m+1];
+        int[] curr = new int[m+1];
+
+        for(int j = 1; j<=m; j++)
+            prev[j] = j;
+
+        for(int i = 1; i<=n; i++) {
+            curr[0] = i;
+            for(int j = 1; j<=m ; j++) {
+                if(word1.charAt(i-1) == word2.charAt(j-1))
+                    curr[j] = prev[j-1];
+                else curr[j] = 1 + Math.min(prev[j], Math.min(curr[j-1], prev[j-1]));
+            }
+            prev = curr.clone();
+        }
+
+        return prev[m];
+    }
+}
