@@ -1,6 +1,6 @@
 // https://leetcode.com/problems/longest-common-subsequence
 
-//Solution 1 - Recursion TLE (indices from n, m to 0)
+// Solution 1 - Recursion TLE (indices from n, m to 0)
 // Time Complexity - O(2^(n+m)) - exponential
 // Space Complexity -  O(n+m) - linear
 
@@ -19,7 +19,7 @@ public:
     }
 };
 
-//Solution 2 - Memoization (indices from n, m to 0)
+// Solution 2 - Memoization (indices from n, m to 0)
 // Time Complexity - O(nm) - no of unique function calls
 // Space Complexity -  O(n+m) + O(nm) (recursive stack space + 2d array)
 
@@ -86,7 +86,7 @@ public:
     }
 };
 
-//Solution 5 - Bottom-Up DP
+// Solution 5 - Bottom-Up DP
 // Time Complexity - O(nm) 
 // Space Complexity -  O(nm) 
 
@@ -108,7 +108,7 @@ public:
     }
 };
 
-//Solution 6 - Space Optimised Bottom Up DP
+// Solution 6 - Space Optimised Bottom Up DP
 // Time Complexity - O(nm) 
 // Space Complexity -  O(m) 
 
