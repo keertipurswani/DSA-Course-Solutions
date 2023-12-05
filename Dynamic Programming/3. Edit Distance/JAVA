@@ -1,0 +1,110 @@
+// https://leetcode.com/problems/edit-distance
+
+// Solution 1 - Recursion TLE - indices 0 to n
+// Time Complexity - O(3^(n+m)) - exponential
+// Space Complexity -  O(n+m) - linear
+
+class Solution {
+
+    int helper(String s1, String s2, int ind1, int ind2) {
+        if(ind1 >= s1.length())
+            return s2.length() - ind2;
+        if(ind2 >= s2.length())
+            return s1.length() - ind1;
+        if(s1.charAt(ind1) == s2.charAt(ind2))
+            return helper(s1, s2, ind1+1, ind2+1);
+        return 1 + Math.min(helper(s1, s2, ind1, ind2+1), 
+                Math.min(helper(s1, s2, ind1+1, ind2), helper(s1, s2, ind1+1, ind2+1)));
+    }
+
+    public int minDistance(String word1, String word2) {
+        return helper(word1, word2, 0, 0);
+    }
+}
+
+// Solution 2 - Memoization
+// Time Complexity - O(nm) - no of unique function calls
+// Space Complexity -  O(n+m) + O(nm) (recursive stack space + 2d array)
+
+class Solution {
+
+    int helper(String s1, String s2, int ind1, int ind2, int[][] dp) {
+        if(ind1 >= s1.length())
+            return s2.length() - ind2;
+        if(ind2 >= s2.length())
+            return s1.length() - ind1;
+
+        if(dp[ind1][ind2] != -1) return dp[ind1][ind2];
+
+        if(s1.charAt(ind1) == s2.charAt(ind2))
+            return dp[ind1][ind2] = helper(s1, s2, ind1+1, ind2+1, dp);
+        return dp[ind1][ind2] = 1 + Math.min(helper(s1, s2, ind1, ind2+1, dp), 
+                Math.min(helper(s1, s2, ind1+1, ind2, dp), helper(s1, s2, ind1+1, ind2+1, dp)));
+    }
+
+    public int minDistance(String word1, String word2) {
+        int[][] dp = new int[word1.length()][word2.length()];
+
+        for(int[] row: dp) {
+            Arrays.fill(row, -1);
+        }
+
+        return helper(word1, word2, 0, 0, dp);
+    }
+}
+
+// Solution 3 - Bottom Up DP
+// Time Complexity - O(nm) 
+// Space Complexity -  O(nm) 
+
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int n = word1.length(), m = word2.length();
+        int[][] dp = new int[n+1][m+1];
+
+        for(int[] row: dp) {
+            Arrays.fill(row, 0);
+        }
+
+        for(int i = 1; i<=n; i++)
+            dp[i][0] = i;
+        for(int j = 1; j<=m; j++)
+            dp[0][j] = j;
+
+        for(int i = 1; i<=n; i++) {
+            for(int j = 1; j<=m ; j++) {
+                if(word1.charAt(i-1) == word2.charAt(j-1))
+                    dp[i][j] = dp[i-1][j-1];
+                else dp[i][j] = 1 + Math.min(dp[i-1][j], Math.min(dp[i][j-1], dp[i-1][j-1]));
+            }
+        }
+        return dp[n][m];
+    }
+}
+
+// Solution 4 - Space Optimised Bottom Up DP
+// Time Complexity - O(nm) 
+// Space Complexity -  O(m) 
+
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int n = word1.length(), m = word2.length();
+        int[] prev = new int[m+1];
+        int[] curr = new int[m+1];
+
+        for(int j = 1; j<=m; j++)
+            prev[j] = j;
+
+        for(int i = 1; i<=n; i++) {
+            curr[0] = i;
+            for(int j = 1; j<=m ; j++) {
+                if(word1.charAt(i-1) == word2.charAt(j-1))
+                    curr[j] = prev[j-1];
+                else curr[j] = 1 + Math.min(prev[j], Math.min(curr[j-1], prev[j-1]));
+            }
+            prev = curr.clone();
+        }
+
+        return prev[m];
+    }
+}
