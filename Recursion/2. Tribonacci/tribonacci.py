@@ -4,6 +4,8 @@
 # Actual problem: find tribonacci of nth number
 # Sub-problem: if we can find the tribonacci of f(n-1), f(n-2) and f(n-3) then we can find the tribonacci of f(n).
 # Recurrence relation: f(n)=f(n-1)+f(n-2)+f(n-3)
+# Time Complexity: O(3^n)
+# Space complexity: O(n)
 
 class Solution:
     def tribonacci(self, n: int) -> int:

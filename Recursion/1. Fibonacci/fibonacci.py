@@ -4,6 +4,8 @@
 # Actual problem: find fibonacci of the nth number
 # Sub-problem: find fibonacci of (n-1) and (n-2)
 # Recurrence relation: f(n)=f(n-1)+f(n-2)
+# Time Complexity: O(2^n)
+# Space complexity: O(n)
 
 class Solution:
     def fib(self, n: int) -> int:
