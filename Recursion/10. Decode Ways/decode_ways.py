@@ -17,7 +17,7 @@ class Solution:
         result=0
         if inputString[index]!='0':
             result=self.decodeString(index-1,inputString)
-        if (inputString[index-1]=='1' or (inputString[index-1]=='2' and inputString[index]>='0' and inputString[index-1]<='6')):
+        if (inputString[index-1]=='1' or (inputString[index-1]=='2' and inputString[index]>='0' and inputString[index]<='6')):
             result+=self.decodeString(index-2,inputString)
         return result
 

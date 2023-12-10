@@ -23,15 +23,18 @@ class Solution:
                 board[row][col]='.'
 
     def isValid(self,row:int,col:int,n:int,board:List[str])->bool:
+        # check horizontal
         for c in range(0,col):
             if board[row][c]=='Q':
                 return False
+        # check left top diagonal
         r,c=row,col
         while r>=0 and c>=0:
             if board[r][c]=='Q':
                 return False
             r-=1
             c-=1
+        # check diagonal bottom left
         r,c=row,col
         while r<n and c>=0:
             if board[r][c]=='Q':
