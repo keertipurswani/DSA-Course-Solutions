@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/binary-tree-preorder-traversal
+
+// Solution 1 - Add checks before calls
+
+class Solution {
+    private void helper(TreeNode root, List<Integer> res) {
+        res.add(root.val);
+        if(root.left != null) helper(root.left, res);
+        if(root.right != null) helper(root.right, res);
+    }
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if(root != null)
+            helper(root, res);
+        return res;
+    }
+}
+
+// Solution 2 - Add check in function
+
+class Solution {
+    private void helper(TreeNode root, List<Integer> res) {
+        if(root == null) return;
+        res.add(root.val);
+        helper(root.left, res);
+        helper(root.right, res);
+    }
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        helper(root, res);
+        return res;
+    }
+}
