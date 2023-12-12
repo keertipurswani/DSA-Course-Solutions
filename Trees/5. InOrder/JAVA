@@ -14,3 +14,26 @@ class Solution {
         return res;
     }
 }
+
+// Iterative Solution
+
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if(root == null) return res;
+        Stack<TreeNode> st = new Stack<>();
+        while(true) {
+            if(root != null) {
+                st.push(root);
+                root = root.left;
+            } else {
+                if(st.isEmpty()) break;
+                root = st.peek();
+                res.add(root.val);
+                st.pop();
+                root = root.right;
+            }
+        }
+        return res;
+    }
+}

@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private TreeNode helper(int[] inorder, int in_st, int in_end, int[] postorder, int post_st, int post_end, HashMap<Integer,Integer> mp) {
+        if(post_st > post_end || in_st > in_end) return null;
+
+        TreeNode root = new TreeNode(postorder[post_end]);
+        int in_root_idx = mp.get(postorder[post_end]);
+        int num_in_left = in_root_idx - in_st;
+        root.left = helper(inorder, in_st, in_root_idx-1, postorder, post_st, post_st+num_in_left-1, mp);
+        root.right = helper(inorder, in_root_idx + 1, in_end, postorder, post_st+num_in_left, post_end-1, mp);
+        return root;
+    }
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        HashMap<Integer, Integer> map = new HashMap<> ();
+        int s = inorder.length;
+        for(int i = 0; i<s; i++)
+            map.put(inorder[i], i);
+        return helper(inorder, 0, s-1, postorder, 0, s-1, map);
+    }
+}
