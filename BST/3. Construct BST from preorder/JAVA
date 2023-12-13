@@ -11,12 +11,9 @@ class Solution {
             if(preorder[idx] > preorder[st]) break;
         }
 
-        if(idx > end) 
-            root.left = helper(preorder, st+1, end);
-        else {
-            root.left = helper(preorder, st+1, idx-1);
-            root.right = helper(preorder, idx, end);
-        }
+        root.left = helper(preorder, st+1, idx-1);
+        root.right = helper(preorder, idx, end);
+        
         return root;
     }
 
