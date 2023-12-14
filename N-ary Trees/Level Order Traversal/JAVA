@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/n-ary-tree-level-order-traversal
+
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()) {
+            List<Integer> curr = new ArrayList<>();
+            int s = q.size();
+            for(int i = 0; i<s; i++) {
+                Node front = q.remove();
+                for(Node child : front.children)
+                    q.add(child);
+                curr.add(front.val);
+            }
+            res.add(curr);
+        }
+
+        return res;
+    }
+}
