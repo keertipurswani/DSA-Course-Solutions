@@ -1,0 +1,135 @@
+// https://leetcode.com/problems/find-if-path-exists-in-graph
+
+// Solution 1 - Adj Matrix and DFS
+// Memory Limit Exceeded
+
+class Solution {
+
+    private boolean helper(int n, int[][] graph, int src, int dest, boolean[] vis) {
+        if(src == dest) return true;
+        vis[src] = true;;
+        for(int i = 0; i<n; i++) {
+            if(graph[src][i] == 1 && !vis[i]) {
+                if(helper(n, graph, i, dest, vis))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        int[][] graph = new int[n][n]; // can have 2d array of bool also
+        boolean[] vis = new boolean[n];
+        for(int[] row: graph) {
+            Arrays.fill(row, 0);
+        }
+        for(int[] edge: edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph[u][v] = 1;
+            graph[v][u] = 1;
+        }
+        return helper(n, graph, source, destination, vis);
+    }
+}
+
+// Solution 2 - Adj List and DFS
+
+class Solution {
+
+    private boolean helper(Map<Integer, List<Integer>> graph, int src, int dest, boolean[] vis) {
+        if(src == dest) return true;
+        vis[src] = true;
+        for(int neighbor : graph.get(src)) {
+            if(!vis[neighbor]) {
+                if(helper(graph, neighbor, dest, vis))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        boolean[] vis = new boolean[n];
+
+        for(int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph.computeIfAbsent(u, value->new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, value->new ArrayList<>()).add(u);
+        }
+
+        return helper(graph, source, destination, vis);
+    }
+}
+
+// Solution 3 - Adj Matrix and BFS
+// Memory Limit Exceeded
+
+class Solution {
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        int[][] graph = new int[n][n];
+        boolean[] vis = new boolean[n];
+        for(int[] row: graph) {
+            Arrays.fill(row, 0);
+        }
+        for(int[] edge: edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph[u][v] = 1;
+            graph[v][u] = 1;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        q.add(source);
+        vis[source] = true;
+
+        while(!q.isEmpty()) {
+            int curr = q.remove();
+            if(curr == destination) 
+                return true;
+            for(int i = 0; i<n; i++) {
+                if(graph[curr][i] == 1 && !vis[i]) {
+                    q.add(i);
+                    vis[i] = true;
+                }
+            }
+        }
+
+        return false;
+    }
+}
+
+// Solution 4 - Adj List and BFS
+
+class Solution {
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        boolean[] vis = new boolean[n];
+
+        for(int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph.computeIfAbsent(u, value->new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, value->new ArrayList<>()).add(u);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        q.add(source);
+        vis[source] = true;
+
+        while(!q.isEmpty()) {
+            int curr = q.remove();
+            if(curr == destination) 
+                return true;
+            for(int neighbor : graph.get(curr)) {
+                if(!vis[neighbor]) {
+                    q.add(neighbor);
+                    vis[neighbor] = true;
+                }
+            }
+        }
+
+        return false;
+    }
+}

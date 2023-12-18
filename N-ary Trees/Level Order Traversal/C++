@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/n-ary-tree-level-order-traversal
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> res;
+        if(root == nullptr) return res;
+        queue<Node*> q;
+        q.push(root);
+        while(!q.empty()) {
+            vector<int> curr;
+            int s = q.size();
+            for(int i = 0; i<s; i++) {
+                Node* front = q.front();
+                q.pop();
+                for(auto itr : front->children) {
+                    q.push(itr);
+                }
+                curr.push_back(front->val);
+            }
+            res.push_back(curr);
+        }
+        return res;
+    }
+};

@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/serialize-and-deserialize-binary-tree
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null) return "";
+        Queue<TreeNode> q = new LinkedList<>();
+        String res = "";
+        q.add(root);
+        while(!q.isEmpty()) {
+            TreeNode node = q.remove();
+            if(node == null) 
+                res += "#,";
+            else {
+                res += (String.valueOf(node.val)) + ",";
+                q.add(node.left);
+                q.add(node.right);
+            }
+        }
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data == "") return null;
+        Queue<TreeNode> q = new LinkedList<>();
+        String[] values = data.split(",");
+        TreeNode root = new TreeNode(Integer.parseInt(values[0]));
+        q.add(root);
+        for(int i = 1; i<values.length; i++) {
+            TreeNode front = q.remove();
+
+            if(values[i].equals("#")) 
+                front.left = null;
+            else {
+                front.left = new TreeNode(Integer.parseInt(values[i]));
+                q.add(front.left);
+            }
+
+            if(values[++i].equals("#")) 
+                front.right = null;
+            else {
+                front.right = new TreeNode(Integer.parseInt(values[i]));
+                q.add(front.right);
+            }
+        }
+        return root;
+    }
+}

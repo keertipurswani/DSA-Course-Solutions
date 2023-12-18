@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/unique-binary-search-trees-ii
+
+class Solution {
+    private List<TreeNode> helper(int start, int end) {
+        List<TreeNode> res = new ArrayList<>();
+
+        if (start > end) {
+            res.add(null);
+            return res;
+        }
+
+        if (start == end) {
+            res.add(new TreeNode(start));
+            return res;
+        }
+
+        List<TreeNode> left, right;
+        TreeNode root;
+
+        for (int i = start; i <= end; i++) {
+            left = helper(start, i - 1);
+            right = helper(i + 1, end);
+
+            for (TreeNode lnode : left) {
+                for (TreeNode rnode : right) {
+                    root = new TreeNode(i);
+                    root.left = lnode;
+                    root.right = rnode;
+                    res.add(root);
+                }
+            }
+        }
+
+        return res;
+    }    
+
+    public List<TreeNode> generateTrees(int n) {
+        return helper(1, n);
+    }
+}

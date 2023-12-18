@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/validate-binary-search-tree
+
+// Another Approach - check if inorder traversal is sorted or not
+
+// Solution 1
+
+class Solution {
+    private boolean helper(TreeNode root, long min, long max) {
+        if(root == null) return true;
+        if(root.val <= min || root.val >= max) return false;
+        return helper(root.left, min, root.val) && helper(root.right, root.val, max);
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+}
+
+// Solution 2
+
+class Solution {
+    private boolean helper(TreeNode root, TreeNode min, TreeNode max) {
+        if(root == null) return true;
+        if((min == null || root.val > min.val) && (max == null || root.val < max.val))
+            return helper(root.left, min, root) && helper(root.right, root, max);
+        return false;
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        return helper(root, null, null);
+    }
+}
