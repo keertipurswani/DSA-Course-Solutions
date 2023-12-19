@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/numbers-with-same-consecutive-differences
+
+// Solution 1 - DFS
+
+class Solution {
+    private void dfs(int num, int n, int k, List<Integer> res) {
+        if(n == 0) {
+            res.add(num);
+            return;
+        }
+        int x = num % 10;
+        if(x+k <= 9) dfs(num * 10 + x+k, n-1, k, res);
+        if(k != 0 && x-k >= 0) dfs(num*10 + x-k, n-1, k, res);
+    }
+
+    public int[] numsSameConsecDiff(int n, int k) {
+        List<Integer> res = new ArrayList<>();
+        for(int i = 1; i<=9; i++)
+            dfs(i, n-1, k, res);
+        int[] retres = new int[res.size()];
+        for(int i = 0; i<res.size(); i++)
+            retres[i] = res.get(i);
+        return retres;
+    }
+}
+
+// Solution 2 - BFS
+
+class Solution {
+    public int[] numsSameConsecDiff(int n, int k) {
+        List<Integer> res = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+
+        for(int i = 1; i<=9; i++) 
+            q.add(i);
+        int len = 1; //level
+
+        while(!q.isEmpty() && len < n) {
+            len++;
+            int s = q.size();
+            for(int i = 0; i<s; i++) {
+                int f = q.remove();
+                int x = f%10;
+                if(x+k <= 9)
+                    q.add(f*10 + x+k);
+                if(k != 0 && x-k >= 0)
+                    q.add(f*10 + x-k);
+            }
+        }
+
+        while(!q.isEmpty()) 
+            res.add(q.remove());
+
+        int[] retres = new int[res.size()];
+        for(int i = 0; i<res.size(); i++)
+            retres[i] = res.get(i);
+        return retres;
+    }
+}
+

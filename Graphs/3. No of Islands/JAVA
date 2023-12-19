@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/number-of-islands
+
+class Solution {
+    boolean isSafe(int i, int j, int n, int m) {
+        return (i>=0 && i<n && j>=0 && j<m);
+    }
+
+    void dfs(char[][] grid, boolean[][] vis, int i, int j, int n, int m) {
+        vis[i][j] = true;
+        int[][] dir = {{0,-1}, {0,1}, {1,0}, {-1,0}};
+        for(int k = 0; k<4; k++) {
+            int newi = i + dir[k][0];
+            int newj = j + dir[k][1];
+            if(isSafe(newi, newj, n, m) && grid[newi][newj] == '1' && !vis[newi][newj])
+                dfs(grid, vis, newi, newj, n, m);
+        }
+    }
+
+    public int numIslands(char[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int res = 0;
+        boolean[][] vis = new boolean[n][m];
+        for(boolean[] row : vis)
+            Arrays.fill(row, false);
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<m; j++) {
+                if(grid[i][j] == '1' && !vis[i][j]) {
+                    dfs(grid, vis, i, j, n, m);
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+}
