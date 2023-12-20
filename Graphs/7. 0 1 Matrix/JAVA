@@ -1,0 +1,70 @@
+// https://leetcode.com/problems/01-mat
+
+// Solution 1 - BFS
+
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+        int n = mat.length, m = mat[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<m; j++) {
+                if(mat[i][j] == 0) 
+                    q.add(new int[] {i, j});
+                else 
+                    mat[i][j] = m+n;
+            }
+        }
+
+        int[][] dir = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        while(!q.isEmpty()) {
+            int[] curr = q.remove();
+            int i = curr[0], j = curr[1];
+            for(int k = 0; k<4; k++) {
+                int newi = i + dir[k][0];
+                int newj = j + dir[k][1];
+                if(newi >= 0 && newi < n && newj >= 0 && newj < m && mat[newi][newj] > mat[i][j] + 1) {
+                    mat[newi][newj] = 1 + mat[i][j];
+                    q.add(new int[]{newi, newj});
+                }
+            }
+        }
+
+        return mat;
+    }
+}
+
+// Solution 2 - DP
+
+class Solution {
+    public int[][] updatemat(int[][] mat) {
+        int n = mat.length, m = mat[0].length;
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<m; j++) {
+                if(mat[i][j] != 0) {
+                    mat[i][j] = m+n;
+                }
+            }
+        }
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<m; j++) {
+                if(mat[i][j] != 0) {
+                    if(i != 0) mat[i][j] = Math.min(mat[i][j], 1 + mat[i-1][j]);
+                    if(j != 0) mat[i][j] = Math.min(mat[i][j], 1 + mat[i][j-1]);
+                }
+            }
+        }
+
+        for(int i = n-1; i>=0; i--) {
+            for(int j = m-1; j>=0 ; j--) {
+                if(mat[i][j] != 0) {
+                    if(i != n-1) mat[i][j] = Math.min(mat[i][j], mat[i+1][j] + 1);
+                    if(j != m-1) mat[i][j] = Math.min(mat[i][j], mat[i][j+1] + 1);
+                }
+            }
+        }
+        
+        return mat;
+    }
+}

@@ -1,0 +1,72 @@
+// https://leetcode.com/problems/is-graph-bipartite
+
+// Solution 1 - DFS
+
+class Solution {
+    private boolean dfs(int[][] graph, int[] vis, int curr, int color) {
+        vis[curr] = color;
+        for(int neighbor : graph[curr]) {
+            if(vis[neighbor] == -1) {
+                // can pass 1-color also
+                if(dfs(graph, vis, neighbor, color == 1 ? 0 : 1) == false) 
+                    return false;
+            } else {
+                if(vis[neighbor] == color) return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        int[] vis = new int[n];
+        for(int i = 0; i<n; i++)
+            vis[i] = -1; //not colored
+        
+        for(int i = 0; i<n; i++) {
+            if(vis[i] == -1) {
+                if(!dfs(graph, vis, i, 0)) // can pass 1 as well
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Solution 2 - BFS
+
+class Solution {
+    private boolean bfs(int[][] graph, int[] vis, int start, int color) {
+        vis[start] = color;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(start);
+        while(!q.isEmpty()) {
+            int curr = q.remove();
+            for(int neighbor : graph[curr]) {
+                if(vis[neighbor] == -1) {
+                    vis[neighbor] = 1-vis[curr];
+                    q.add(neighbor);
+                } else if(vis[neighbor] == vis[curr])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        int[] vis = new int[n];
+        for(int i = 0; i<n; i++)
+            vis[i] = -1; //not colored
+        
+        for(int i = 0; i<n; i++) {
+            if(vis[i] == -1) {
+                if(!bfs(graph, vis, i, 0)) // can pass 1 as well
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}

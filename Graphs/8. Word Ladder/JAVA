@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/word-ladder
+
+class Solution {
+    private boolean isConnected(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i))
+                diff++;
+            if (diff > 1) return false;
+        }
+        return true;
+    }
+
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Map<String, List<String>> wordGraph = new HashMap<>();
+        if (!wordList.contains(endWord)) return 0;
+        wordList.add(beginWord);
+        
+        int n = wordList.size();
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (isConnected(wordList.get(i), wordList.get(j))) {
+                    wordGraph.computeIfAbsent(wordList.get(i), k -> new ArrayList<>()).add(wordList.get(j));
+                    wordGraph.computeIfAbsent(wordList.get(j), k -> new ArrayList<>()).add(wordList.get(i));
+                }
+            }
+        }
+
+        Map<String, Boolean> vis = new HashMap<>();
+        vis.put(beginWord, true);
+        Queue<Pair<String, Integer>> q = new LinkedList<>();
+        q.add(new Pair<>(beginWord, 1));
+
+        while (!q.isEmpty()) {
+            String curr = q.peek().getKey();
+            int dist = q.peek().getValue();
+            q.poll();
+            if (curr.equals(endWord)) return dist;
+            for (String word : wordGraph.getOrDefault(curr, new ArrayList<>())) {
+                if (!vis.getOrDefault(word, false)) {
+                    vis.put(word, true);
+                    q.add(new Pair<>(word, dist + 1));
+                }
+            }
+        }
+
+        return 0;
+    }
+}
