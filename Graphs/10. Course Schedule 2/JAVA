@@ -1,0 +1,47 @@
+// https://leetcode.com/problems/course-schedule-ii
+// Topological Sorting
+
+class Solution {
+
+    private boolean dfs(int curr, int n, List<List<Integer>> graph, boolean[] visited, boolean[] visiting, List<Integer> res) {
+        visiting[curr] = true;
+
+        for(int neighbor : graph.get(curr)) {
+            if(visiting[neighbor])
+                return false;
+            if(!visited[neighbor]) {
+                if(!dfs(neighbor, n, graph, visited, visiting, res))
+                    return false;
+            }
+        }
+
+        visiting[curr] = false;
+        visited[curr] = true;
+        res.add(curr);
+        return true;
+    }
+
+    public int[] findOrder(int n, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i=0; i<n; i++)
+            graph.add(new ArrayList<Integer>());
+        for(int[] prerequisite : prerequisites)
+            graph.get(prerequisite[0]).add(prerequisite[1]);
+
+        boolean[] visited = new boolean[n];
+        boolean[] visiting = new boolean[n];
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 0; i<n; i++) {
+            if(!visited[i]) {
+                if(!dfs(i, n, graph, visited, visiting, res))
+                    return new int[0];
+            }
+        }
+        int[] resArray = new int[res.size()];
+        for(int i=0; i<res.size(); i++){
+            resArray[i] = res.get(i);   
+        }
+        return resArray;
+    }
+}

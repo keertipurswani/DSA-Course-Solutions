@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/course-schedule
+// Topological Sorting
+
+class Solution {
+    private boolean dfs(int curr, int n, List<List<Integer>> graph, boolean[] visited, boolean[] visiting) {
+        visiting[curr] = true;
+
+        for(int neighbor : graph.get(curr)) {
+            if(visiting[neighbor])
+                return false;
+            if(!visited[neighbor]) {
+                if(!dfs(neighbor, n, graph, visited, visiting))
+                    return false;
+            }
+        }
+
+        visiting[curr] = false;
+        visited[curr] = true;
+        return true;
+    }
+
+    public boolean canFinish(int n, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i=0; i<n; i++)
+            graph.add(new ArrayList<Integer>());
+        for(int[] prerequisite : prerequisites)
+            graph.get(prerequisite[0]).add(prerequisite[1]);
+
+        boolean[] visited = new boolean[n];
+        boolean[] visiting = new boolean[n];
+
+        for(int i = 0; i<n; i++) {
+            if(!visited[i]) {
+                if(!dfs(i, n, graph, visited, visiting))
+                    return false;
+            }
+        }
+        return true;
+    }
+}
