@@ -1,0 +1,76 @@
+// https://leetcode.com/problems/network-delay-time
+
+// Solution 1 - Bellman Ford 
+// Time Complexity - O(V.E) = O(V^3)
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            for (int[] edge : times) {
+                int u = edge[0];
+                int v = edge[1];
+                int w = edge[2];
+
+                if (dist[u] != Integer.MAX_VALUE && dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                }
+            }
+        }
+
+        int res = -1;
+        for (int i = 1; i <= n; i++) {
+            res = Math.max(res, dist[i]);
+        }
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+}
+
+// Solution 2 - Dijkstra Algo - Priority Queue
+// Time Complexity - O(V + ElogV)
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        List<List<int[]>> graph = new ArrayList<>(n + 1);
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int[] time : times) {
+            graph.get(time[0]).add(new int[]{time[1], time[2]});
+        }
+
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.offer(new int[]{0, k});
+
+        while (!pq.isEmpty()) {
+            int[] top = pq.poll();
+            int node = top[1];
+            int nodedist = top[0];
+
+            for (int[] neighbor : graph.get(node)) {
+                int adjnode = neighbor[0];
+                int adjnodedist = neighbor[1];
+
+                if (dist[adjnode] > nodedist + adjnodedist) {
+                    dist[adjnode] = nodedist + adjnodedist;
+                    pq.offer(new int[]{dist[adjnode], adjnode});
+                }
+            }
+        }
+
+        int res = -1;
+        for (int i = 1; i <= n; i++) {
+            res = Math.max(res, dist[i]);
+        }
+        if (res == Integer.MAX_VALUE) return -1;
+        return res;
+    }
+}

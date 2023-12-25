@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/min-cost-to-connect-all-points
+
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+        vector<vector<pair<int, int>>> graph(points.size(), vector<pair<int, int>>());
+
+        for(int i=0; i< points.size(); i++){
+            vector<int> curr = points[i];
+            for(int j=0; j< points.size() ; j++){
+                if(j==i) continue;
+                graph[i].push_back({abs(curr[0]-points[j][0])+abs(curr[1]-points[j][1]), j});
+            }
+        }
+
+        vector<int> vis(points.size(), 0);
+        pq.push({0, 0});
+        int res=0;
+
+        while(!pq.empty()){
+            int curr = pq.top().second;
+            int cost = pq.top().first;
+            pq.pop();
+
+            if(vis[curr]) continue;
+            vis[curr] = 1;
+            res += cost;
+
+            for(auto neighbor : graph[curr]){
+                if(!vis[neighbor.second])
+                    pq.push(neighbor);
+            }
+        }
+
+        return res;
+    }
+};

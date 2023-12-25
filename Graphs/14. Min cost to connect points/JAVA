@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/min-cost-to-connect-all-points
+
+class Solution {
+    public int minCostConnectPoints(int[][] points) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+
+        int[][] graph = new int[points.length][points.length];
+
+        for (int i = 0; i < points.length; i++) {
+            int[] curr = points[i];
+            for (int j = 0; j < points.length; j++) {
+                if (j == i)
+                    continue;
+                graph[i][j] = Math.abs(curr[0] - points[j][0]) + Math.abs(curr[1] - points[j][1]);
+            }
+        }
+
+        int[] vis = new int[points.length];
+        pq.offer(new int[]{0, 0});
+        int res = 0;
+
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int cost = curr[0];
+            int node = curr[1];
+
+            if (vis[node] == 1)
+                continue;
+            vis[node] = 1;
+            res += cost;
+
+            for (int i = 0; i < points.length; i++) {
+                if (vis[i] == 0)
+                    pq.offer(new int[]{graph[node][i], i});
+            }
+        }
+
+        return res;
+    }
+}
