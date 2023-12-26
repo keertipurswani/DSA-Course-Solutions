@@ -9,7 +9,7 @@ class Solution {
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[k] = 0;
 
-        for (int i = 1; i <= n; i++) {
+        for (int i = 1; i < n; i++) {
             for (int[] edge : times) {
                 int u = edge[0];
                 int v = edge[1];
@@ -71,6 +71,45 @@ class Solution {
             res = Math.max(res, dist[i]);
         }
         if (res == Integer.MAX_VALUE) return -1;
+        return res;
+    }
+}
+
+// Solution 3 - Floyd Warshall
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[][] dist = new int[n][n];
+
+        for (int[] row : dist) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        for (int[] time : times) {
+            dist[time[0] - 1][time[1] - 1] = time[2];
+        }
+
+        for (int i = 0; i < n; i++) {
+            dist[i][i] = 0;
+        }
+
+        for (int kVal = 0; kVal < n; kVal++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (dist[i][kVal] != Integer.MAX_VALUE && dist[kVal][j] != Integer.MAX_VALUE) {
+                        dist[i][j] = Math.min(dist[i][j], dist[i][kVal] + dist[kVal][j]);
+                    }
+                }
+            }
+        }
+
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < n; ++i) {
+            if (dist[k - 1][i] == Integer.MAX_VALUE) {
+                return -1;
+            }
+            res = Math.max(res, dist[k - 1][i]);
+        }
         return res;
     }
 }

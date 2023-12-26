@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/min-cost-to-connect-all-points
 
+// Solution 1 - Prim's Algo
+
 class Solution {
     public int minCostConnectPoints(int[][] points) {
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
@@ -32,6 +34,63 @@ class Solution {
             for (int i = 0; i < points.length; i++) {
                 if (vis[i] == 0)
                     pq.offer(new int[]{graph[node][i], i});
+            }
+        }
+
+        return res;
+    }
+}
+
+// Solution 2 - Kruskal's Algo
+
+class DSU {
+    private int[] par;
+
+    public DSU(int n) {
+        par = new int[n];
+        Arrays.fill(par, -1);
+    }
+
+    public int findParent(int x) {
+        if (par[x] == -1) return x;
+        return findParent(par[x]);
+    }
+
+    public boolean union(int x, int y) {
+        int parX = findParent(x);
+        int parY = findParent(y);
+
+        if (parX == parY) return false;
+
+        par[parY] = parX;
+        return true;
+    }
+}
+
+class Solution {
+
+    private int dist(int[] point1, int[] point2) {
+        return Math.abs(point1[0] - point2[0]) + Math.abs(point1[1] - point2[1]);
+    }
+
+    public int minCostConnectPoints(int[][] points) {
+        List<int[]> edges = new ArrayList<>();
+        int n = points.length;
+        int res = 0;
+        DSU dsuObj = new DSU(n);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                edges.add(new int[]{i, j, dist(points[i], points[j])});
+            }
+        }
+
+        edges.sort((v1, v2) -> Integer.compare(v1[2], v2[2]));
+
+        for (int i = 0; i < edges.size(); i++) {
+            int u = edges.get(i)[0], v = edges.get(i)[1], w = edges.get(i)[2];
+            if (dsuObj.union(u, v)) {
+                res += w;
             }
         }
 

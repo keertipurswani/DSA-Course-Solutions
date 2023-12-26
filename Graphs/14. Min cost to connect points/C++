@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/min-cost-to-connect-all-points
 
+// Solution 1 - Prim's Algo
+
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
@@ -31,6 +33,62 @@ public:
             for(auto neighbor : graph[curr]){
                 if(!vis[neighbor.second])
                     pq.push(neighbor);
+            }
+        }
+
+        return res;
+    }
+};
+
+// Solution 2 - Kruskal's Algo
+
+class DSU {
+    vector<int> par;
+    public:
+        DSU(int n) {
+            par = vector<int>(n, -1);
+        }
+
+        int findParent(int x) {
+            if(par[x] == -1) return x;
+            return findParent(par[x]);
+        }
+
+        bool unit(int x, int y) {
+            int parX = findParent(x), parY = findParent(y);
+            if(parX == parY) return false;
+
+            par[parY] = parX;
+            return true;
+        }
+};
+
+class Solution {
+public:
+    int dist(vector<int>& a, vector<int>& b){
+        return abs(a[0]-b[0]) + abs(a[1]-b[1]);
+    }
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        vector<vector<int>> edges;
+        int n = points.size();
+        int res = 0;
+        DSU dsuObj(n);
+
+        for(int i=0 ; i<n ; i++){
+            for(int j=i+1 ; j<n ; j++){
+                edges.push_back({i,j, dist(points[i],points[j])});
+            }
+        }
+
+        sort(edges.begin(),edges.end(),[](const vector<int>& v1, const vector<int>& v2) -> bool{
+            return v1[2]<v2[2];
+        });
+
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][0], v = edges[i][1], w = edges[i][2];
+            if(dsuObj.unit(u,v)){
+                res += w;
             }
         }
 
