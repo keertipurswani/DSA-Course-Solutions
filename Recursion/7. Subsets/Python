@@ -1,0 +1,23 @@
+# https://leetcode.com/problems/subsets
+
+class Solution:
+    def helper(self, nums: list[int], ind: int, curr: list[int], res: list[list[int]]) -> None: 
+        if ind == len(nums):
+            res.append(curr[:]) # passing copy of curr
+            # res.append(curr.copy) (can do this way too)
+            return
+        
+        # include
+        curr.append(nums[ind])
+        self.helper(nums, ind+1, curr, res)
+        curr.pop()
+
+        # exclude
+        self.helper(nums, ind+1, curr, res)
+    
+    def subsets(self, nums: list[int]) -> list[list[int]]:
+        cur = []
+        res = []
+        self.helper(nums, 0, cur, res)
+        return res
+    

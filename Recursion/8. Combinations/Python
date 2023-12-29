@@ -1,0 +1,24 @@
+# https://leetcode.com/problems/combinations
+
+class Solution:
+    def helper(self, n: int, k: int, i: int, curr: list[int], res: list[list[int]]) -> None:
+        if len(curr) == k: 
+            res.append(curr[:])
+            return
+        
+        if i > n: return
+
+        # include
+        curr.append(i)
+        self.helper(n, k, i+1, curr, res)
+        curr.pop()
+
+        # exclude
+        self.helper(n, k, i+1, curr, res)
+
+    def combine(self, n: int, k: int) -> list[list[int]]:
+        curr = []
+        res = []
+        self.helper(n, k, 1, curr, res)
+        return res
+    
