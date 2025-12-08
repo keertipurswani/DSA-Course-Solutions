@@ -6,7 +6,6 @@ class Solution {
 public:
 
     bool helper(int i, int j, string& s, vector<vector<int>>& dp) {
-        if(j<i) return false;
         if(i == j) return dp[i][j] = true;
         if(dp[i][j] != -1) return dp[i][j];
 
@@ -39,7 +38,6 @@ class Solution {
 public:
 
     bool helper(int i, int j, string& s, vector<vector<int>>& dp, int& res) {
-        if(j<i) return false;
         if(i == j) {
             if(dp[i][j] == -1) res++; 
             return dp[i][j] = true; 
