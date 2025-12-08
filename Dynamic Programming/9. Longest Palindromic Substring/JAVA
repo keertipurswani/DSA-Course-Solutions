@@ -3,32 +3,34 @@
 // Recursion TLE
 
 class Solution {
-public:
-
-    bool helper(int i, int j, string& s, string& res) {
-        if(j<i) return false;
-        bool isPal = false;
-
-        if(i == j) isPal = true;
-        else if(s[i] == s[j] && (j == i+1 || helper(i+1, j-1, s, res)))
+    private String res = "";  
+    private boolean helper(int i, int j, String s) {
+        boolean isPal = false;
+        if (i == j) {
             isPal = true;
-
-        if(isPal) {
-            if(j-i+1 > res.length())
-                res = s.substr(i, j-i+1);
-        } else {
-            helper(i+1, j, s, res);
-            helper(i, j-1, s, res);
+        } 
+        else if (s.charAt(i) == s.charAt(j) && 
+                (j == i + 1 || helper(i + 1, j - 1, s))) {
+            isPal = true;
+        }
+        if (isPal) {
+            // update longest palindrome
+            if (j - i + 1 > res.length()) {
+                res = s.substring(i, j + 1);  // end index is exclusive in Java
+            }
+        } 
+        else {
+            helper(i + 1, j, s);
+            helper(i, j - 1, s);
         }
         return isPal;
     }
-
-    string longestPalindrome(string s) {
-        string res = "";
-        helper(0, s.length() - 1, s, res);
+    public String longestPalindrome(String s) {
+        res = "";
+        helper(0, s.length() - 1, s);
         return res;
     }
-};
+}
 
 
 // Bottom Up DP
