@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/generate-parentheses/
+
+var generateParenthesis = function(n) {
+    let res = [];
+    helper(n, 0,0,"", res);
+    return res
+};
+
+var helper = function(n, op, clo, cur, res) {
+
+    if(clo == n) {
+        res.push(cur); 
+        return res;
+    }
+
+    if(op < n) {
+        helper(n, op+1, clo, cur+"(", res) ;
+    }
+
+    if(clo < op) {
+        helper(n, op, clo+1, cur+")", res) ;
+    }
+}

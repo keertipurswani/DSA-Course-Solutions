@@ -1,0 +1,13 @@
+//https://leetcode.com/problems/fibonacci-number/
+
+
+Solution 2 - Memoization
+
+var dp = [];
+
+var fib = function(n) {
+    if( n<=1 ) return n;
+    if(dp[n]) return dp[n];
+    dp[n] = fib(n-1) + fib(n-2);    
+    return dp[n];
+};
